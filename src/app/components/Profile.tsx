@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { PLayer } from '../context';
+import { motion } from "framer-motion"
+import TextStagger from './TextStagger';
+
 
 interface ProfileProps {
   player: PLayer
@@ -13,7 +16,7 @@ export default function Profile(props: ProfileProps) {
       <button className='generalButton' onClick={()=>{
         props.setCurrentPage(0)
       }}>Back</button>
-      <h1 className='w-full center'>{props.player.name}</h1>
+      <TextStagger text={props.player.name} title={true}/>
     </div>
   );
 }

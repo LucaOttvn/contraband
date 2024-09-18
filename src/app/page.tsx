@@ -48,7 +48,7 @@ export default function Home() {
   };
   
   return (
-    <div className="h-full center p-10">
+    <div className="h-full center p-5">
       {!fullScreen ? (
         <button onClick={goFullScreen}>Start</button>
       ) : (
