@@ -13,14 +13,14 @@ export default function TextStagger(props: TextStaggerProps) {
             opacity: 1,
             y: 0,
             transition: {
-                delay: index * 0.05, // Adjust delay for staggering effect
+                delay: index * 0.05,
                 duration: 0
             }
         })
     };
 
     const characters = props.text.split('').map((char, index) => ({
-        char,
+        char: char === ' ' ? '\u00A0' : char, // Replace spaces with non-breaking space
         index
     }));
 
