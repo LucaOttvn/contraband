@@ -67,7 +67,8 @@ body {
   height: 2rem;
   background-color: var(--black);
   color: var(--green);
-  text-align: center;
+  text-align: start;
+  caret-shape: blck;
 
   border: solid 1px var(--green);
   padding: 0.5rem;
