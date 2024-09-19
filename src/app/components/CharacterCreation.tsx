@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import { PLayer } from '../context'; // Assuming PLayer is a type or interface
+import TextStagger from './TextStagger';
 
 interface CharacterCreationProps {
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>
@@ -25,7 +26,7 @@ export default function CharacterCreation(props: CharacterCreationProps) {
             className='w-full h-full flex flex-col items-center gap-10'
             onSubmit={handleSubmit}
         >
-            <h1>Create your character</h1>
+            <TextStagger text='Create your character' title={true}/>
             <div className='flex flex-col items-start'>
                 <label htmlFor='name'>Name</label>
                 <input

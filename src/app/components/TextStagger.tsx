@@ -2,12 +2,11 @@ import { motion } from 'framer-motion';
 import React from 'react';
 
 interface TextStaggerProps {
-    text: string
-    title: boolean
+    text: string;
+    title: boolean;
 }
 
 export default function TextStagger(props: TextStaggerProps) {
-
     const textVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: (index: number) => ({
@@ -20,13 +19,18 @@ export default function TextStagger(props: TextStaggerProps) {
         })
     };
 
+    const characters = props.text.split('').map((char, index) => ({
+        char,
+        index
+    }));
+
     return (
         <motion.div
             className={'staggered-text w-full text-center flex flex-wrap justify-center ' + (props.title ? ' title' : '')}
             initial='hidden'
             animate='visible'
         >
-            {props.text.split('').map((char, index) => (
+            {characters.map(({ char, index }) => (
                 <motion.span
                     key={index}
                     variants={textVariants}
