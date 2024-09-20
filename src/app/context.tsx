@@ -1,5 +1,6 @@
-import CharacterCreation from "./components/CharacterCreation";
+import CharacterCreation from "./components/Login";
 
-export interface PLayer {
-    name: string
+export interface Player {
+    name: string,
+    password: string,
 }

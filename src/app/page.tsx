@@ -1,8 +1,8 @@
 'use client'
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import CharacterCreation from "./components/CharacterCreation";
-import { PLayer } from "./context";
+import CharacterCreation from "./components/Login";
+import { Player } from "./context";
 import Profile from "./components/Profile";
 
 
@@ -10,15 +10,14 @@ export default function Home() {
 
 
 
-  const [player, setPlayer] = useState<PLayer>({ name: '' }); // Initialize player with a default object
-
+  const [player, setPlayer] = useState<Player>({name: '', password: ''})
   const [fullScreen, setFulScreen] = useState(true)
   const [currentPage, setCurrentPage] = useState(0)
 
 
   const pages: { [key: number]: React.JSX.Element } = {
-    0: <CharacterCreation setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer}/>,
-    1: <Profile player={player} setCurrentPage={setCurrentPage}/>,
+    0: <CharacterCreation setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} />,
+    1: <Profile player={player} setCurrentPage={setCurrentPage} />,
   }
 
 
@@ -46,7 +45,7 @@ export default function Home() {
       document.documentElement.requestFullscreen();
     }
   };
-  
+
   return (
     <div className="h-full center p-5">
       {!fullScreen ? (

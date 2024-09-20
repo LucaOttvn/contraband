@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { PLayer } from '../context';
+import { Player } from '../context';
 import { motion } from "framer-motion"
 import TextStagger from './TextStagger';
 
 
 interface ProfileProps {
-  player: PLayer
+  player: Player
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
 
