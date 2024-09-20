@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import CharacterCreation from "./components/Login";
+import Login from "./components/Login";
 import { Player } from "./context";
 import Profile from "./components/Profile";
 
@@ -10,19 +10,24 @@ export default function Home() {
 
 
 
-  const [player, setPlayer] = useState<Player>(localStorage.getItem('Player') ? JSON.parse(localStorage.getItem('Player')!) : {name: '', password: ''})
+  const [player, setPlayer] = useState<Player>({ name: '', password: '' })
   const [fullScreen, setFulScreen] = useState(true)
-  const [currentPage, setCurrentPage] = useState(player ? 1 : 0)
+  const [currentPage, setCurrentPage] = useState<number>()
 
 
   const pages: { [key: number]: React.JSX.Element } = {
-    0: <CharacterCreation setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} />,
+    0: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} />,
     1: <Profile player={player} setCurrentPage={setCurrentPage} />,
   }
 
 
   useEffect(() => {
-    player ? setCurrentPage(1) : setCurrentPage(0)
+    if (localStorage.getItem('Player')) {
+      setPlayer(JSON.parse(localStorage.getItem('Player')!))
+      setCurrentPage(1)
+    } else { 
+      setCurrentPage(0)
+    }
 
     const handleFullScreenChange = () => {
       if (!document.fullscreenElement) {
@@ -52,7 +57,7 @@ export default function Home() {
       {!fullScreen ? (
         <button onClick={goFullScreen}>Start</button>
       ) : (
-        pages[currentPage]
+        currentPage != undefined && pages[currentPage]
       )}
     </div>
   );

@@ -6,12 +6,12 @@ import { createPlayer } from '../api/queries'
 
 
 interface LoginProps {
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+    setCurrentPage: React.Dispatch<React.SetStateAction<number | undefined>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
 }
 
-export default function CharacterCreation(props: LoginProps) {
+export default function Login(props: LoginProps) {
 
     function handleSubmit(event: FormEvent) {
         event.preventDefault(); // Prevent the default form submission behavior
