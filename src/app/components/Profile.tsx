@@ -14,8 +14,9 @@ export default function Profile(props: ProfileProps) {
   return (
     <div className='w-full h-full flex flex-col items-start'>
       <button className='generalButton' onClick={()=>{
+        localStorage.removeItem('Player')
         props.setCurrentPage(0)
-      }}>Back</button>
+      }}>Logout</button>
       <TextStagger text={props.player.name} title={true}/>
     </div>
   );
