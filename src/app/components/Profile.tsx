@@ -6,7 +6,7 @@ import TextStagger from './TextStagger';
 
 interface ProfileProps {
   player: Player
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+  setCurrentPage: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 export default function Profile(props: ProfileProps) {
