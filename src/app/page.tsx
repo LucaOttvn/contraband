@@ -10,9 +10,9 @@ export default function Home() {
 
 
 
-  const [player, setPlayer] = useState<Player>({name: '', password: ''})
+  const [player, setPlayer] = useState<Player>(localStorage.getItem('Player') ? JSON.parse(localStorage.getItem('Player')!) : {name: '', password: ''})
   const [fullScreen, setFulScreen] = useState(true)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(player ? 1 : 0)
 
 
   const pages: { [key: number]: React.JSX.Element } = {
@@ -22,6 +22,8 @@ export default function Home() {
 
 
   useEffect(() => {
+    player ? setCurrentPage(1) : setCurrentPage(0)
+
     const handleFullScreenChange = () => {
       if (!document.fullscreenElement) {
         setFulScreen(false)
@@ -32,7 +34,6 @@ export default function Home() {
 
     document.addEventListener("fullscreenchange", handleFullScreenChange);
 
-    // player ? setCurrentPage(1) : setCurrentPage(0)
 
     return () => {
       document.removeEventListener("fullscreenchange", handleFullScreenChange);
