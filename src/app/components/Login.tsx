@@ -6,6 +6,7 @@ import { createPlayer } from '../api/queries'
 
 
 interface LoginProps {
+    setShowingLoader: React.Dispatch<React.SetStateAction<boolean>>
     setCurrentPage: React.Dispatch<React.SetStateAction<number | undefined>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
@@ -63,26 +64,33 @@ export default function Login(props: LoginProps) {
 
             <button
                 onClick={async () => {
-                    let players = await getCollection('players') as unknown as Player[]
+                    if (props.player.name && props.player.password) {
+                        props.setShowingLoader(true)
+                        
+                        let players = await getCollection('players') as unknown as Player[]
 
-                    let existingPlayerName = players.find(player => player.name == props.player.name)
-                    if (existingPlayerName) {
-                        if (existingPlayerName.password == props.player.password) {
+                        let existingPlayerName = players.find(player => player.name == props.player.name)
+                        if (existingPlayerName) {
+                            if (existingPlayerName.password == props.player.password) {
+                                localStorage.setItem('Player', JSON.stringify(props.player))
+                                props.setCurrentPage(1)
+                            }
+                            else {
+                                alert('Wrong password')
+                            }
+                        }
+                        else {
+                            await createPlayer(props.player)
                             localStorage.setItem('Player', JSON.stringify(props.player))
                             props.setCurrentPage(1)
                         }
-                        else {
-                            alert('Wrong password')
-                        }
+                        setTimeout(()=>{
+                            props.setShowingLoader(false)
+                        }, 700)
                     }
                     else {
-                        await createPlayer(props.player)
-                        localStorage.setItem('Player', JSON.stringify(props.player))
-                        props.setCurrentPage(1)
+                        alert('Name or password are missing')
                     }
-
-
-                    console.log(players)
                 }}
                 className='generalButton'
             >

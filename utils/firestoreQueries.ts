@@ -15,10 +15,9 @@ export async function getCollection(collectionName: string) {
 }
 
 export async function addPlayer(playerData: Player) {
-    console.log(playerData);
     try {
         const docRef = await addDoc(collection(db, 'players'), playerData);
-        return { id: docRef.id, ...playerData }; // Return the added player data with the ID
+        return { id: docRef.id, ...playerData };
     } catch (e) {
         console.error("Error adding document: ", e);
         throw new Error("Failed to add player");
