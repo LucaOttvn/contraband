@@ -1,8 +1,8 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import { Player } from '../context';
 import TextStagger from './TextStagger';
-import { getCollection } from '../../../utils/firestoreQueries'
-import { createPlayer } from '../api/queries'
+import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
+
 
 
 interface LoginProps {
@@ -80,7 +80,7 @@ export default function Login(props: LoginProps) {
                             }
                         }
                         else {
-                            await createPlayer(props.player)
+                            await addPlayer(props.player)
                             localStorage.setItem('Player', JSON.stringify(props.player))
                             props.setCurrentPage(1)
                         }

@@ -2,13 +2,14 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
-import { Player } from "./context";
+import { Player, Skill } from "./context";
 import Profile from "./components/Profile";
 import Loader from "./components/Loader";
-
-
+import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 
 export default function Home() {
+
+
 
   const [player, setPlayer] = useState<Player>({ name: '', password: '' })
   const [fullScreen, setFulScreen] = useState(true)
@@ -17,8 +18,9 @@ export default function Home() {
 
   const pages: { [key: number]: React.JSX.Element } = {
     0: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} setShowingLoader={setShowingLoader} />,
-    1: <Profile player={player} setCurrentPage={setCurrentPage} />,
+    1: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} />,
   }
+
 
   useEffect(() => {
     if (localStorage.getItem('Player')) {
@@ -43,11 +45,22 @@ export default function Home() {
 
   useEffect(() => {
     if (showingLoader) {
-      setTimeout(()=>{
+      setTimeout(() => {
         setShowingLoader(false)
       }, 2000)
     }
   }, [showingLoader]);
+
+  useEffect(() => {
+    test()
+  }, [player]);
+
+  async function test() {
+    let players = await getCollection('players')
+    let newPlayer = players.find((p: any) => p.name == player.name && p.password == player.password)
+    console.log(player)
+    updatePlayer(newPlayer!.id, player)
+  }
 
   function goFullScreen() {
     if (document.documentElement.requestFullscreen) {
@@ -58,7 +71,7 @@ export default function Home() {
   return (
     <div className="h-full center p-5">
       {
-        showingLoader ? <Loader/> : currentPage != undefined && pages[currentPage]
+        showingLoader ? <Loader /> : currentPage != undefined && pages[currentPage]
       }
     </div>
   );

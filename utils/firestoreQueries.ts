@@ -1,5 +1,5 @@
 // lib/firestoreQueries.js
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { Player } from "@/app/context";
 
@@ -21,5 +21,16 @@ export async function addPlayer(playerData: Player) {
     } catch (e) {
         console.error("Error adding document: ", e);
         throw new Error("Failed to add player");
+    }
+}
+
+export async function updatePlayer(playerId: string, playerData: Partial<Player>) {
+    try {
+        const playerRef = doc(db, 'players', playerId);
+        await updateDoc(playerRef, playerData);
+        return { id: playerId, ...playerData };
+    } catch (e) {
+        console.error("Error updating document: ", e);
+        throw new Error("Failed to update player");
     }
 }
