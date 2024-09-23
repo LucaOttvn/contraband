@@ -59,7 +59,7 @@ export default function Home() {
     let players = await getCollection('players')
     let newPlayer = players.find((p: any) => p.name == player.name && p.password == player.password)
     console.log(player)
-    updatePlayer(newPlayer!.id, player)
+    if (newPlayer) updatePlayer(newPlayer!.id, player)
   }
 
   function goFullScreen() {

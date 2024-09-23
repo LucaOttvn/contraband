@@ -2,8 +2,8 @@ import { Skill } from '@/app/context';
 import React, { useEffect, useState } from 'react';
 
 interface NumberSelectorProps {
-    currentTotal?: number
-    setCurrentTotal?: React.Dispatch<React.SetStateAction<number>>
+    currentTotal: number
+    setCurrentTotal: React.Dispatch<React.SetStateAction<number>>
     setUserSkills?: React.Dispatch<React.SetStateAction<Skill[]>>
     index: number
 }
@@ -19,20 +19,22 @@ export default function NumberSelector(props: NumberSelectorProps) {
                     i === props.index ? { ...skill, value: currentValue } : skill
                 )
             );
+            console.log(currentValue)
         }
+
     }, [currentValue]);
 
     return (
         <div className='center gap-2'>
             <div className='generalButton' onClick={() => {
-                if (currentValue > 0) {
+                if (currentValue > 0 && props.currentTotal != undefined) {
                     setCurrentValue(currentValue - 1)
-                    if (props.currentTotal && props.setCurrentTotal) props.setCurrentTotal(props.currentTotal + 1)
+                    props.setCurrentTotal(props.currentTotal + 1)
                 }
             }}>-</div>
             <span className='px-2 text-center' style={{ border: 'solid 1px var(--green)', width: '3rem' }}>{currentValue}</span>
             <div className='generalButton' onClick={() => {
-                if (props.currentTotal && props.setCurrentTotal && currentValue < props.currentTotal) {
+                if (props.currentTotal != undefined && props.currentTotal > 0) {
                     setCurrentValue(currentValue + 1)
                     props.setCurrentTotal(props.currentTotal - 1)
                 }

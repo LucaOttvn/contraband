@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import DurationSelector from './microComponents/NumberSelector';
 import TextStagger from './TextStagger';
 import { Player, Skill } from '../context';
+import NumberSelector from './microComponents/NumberSelector';
 
 interface SkillsCreationProps {
     player: Player
@@ -27,7 +27,7 @@ export default function SkillsCreation(props: SkillsCreationProps) {
                             return (
                                 <div key={'skill' + skillIndex} className='center flex-col'>
                                     <span>{skill.name}</span>
-                                    <DurationSelector currentTotal={currentTotal} setCurrentTotal={setCurrentTotal} setUserSkills={props.setUserSkills} index={skillIndex}/>
+                                    <NumberSelector currentTotal={currentTotal} setCurrentTotal={setCurrentTotal} setUserSkills={props.setUserSkills} index={skillIndex}/>
                                 </div>
                             )
                         })
