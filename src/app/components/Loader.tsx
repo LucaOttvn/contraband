@@ -1,6 +1,7 @@
 import React from 'react';
 import { TailSpin } from 'react-loader-spinner'
 import TextStagger from "../components/TextStagger";
+
 interface LoaderProps { }
 
 export default function Loader(props: LoaderProps) {
@@ -14,7 +15,6 @@ export default function Loader(props: LoaderProps) {
                 color="var(--green)"
                 ariaLabel="tail-spin-loading"
                 radius="1"
-                wrapperStyle={{}}
                 wrapperClass=""
             />
             <div>

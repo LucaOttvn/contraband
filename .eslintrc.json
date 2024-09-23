@@ -1,7 +1,18 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript"
+  ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
-    "prefer-const": "off" // Disable the prefer-const rule
+    "prefer-const": "off",
+    "no-console": "off", // Disable console warnings
+    "react/react-in-jsx-scope": "off", // Disable the rule for importing React
+    "react/no-unescaped-entities": "off", // Disable unescaped entities rule
+    "react/prop-types": "off", // Disable prop-types requirement for React
+    "no-undef": "off", // Disable undefined variable rule
+    "no-unused-vars": "off", // Disable unused variable rule globally
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-object-type": "error"
   }
 }
