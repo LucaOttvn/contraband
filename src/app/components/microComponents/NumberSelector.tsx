@@ -19,7 +19,6 @@ export default function NumberSelector(props: NumberSelectorProps) {
                     i === props.index ? { ...skill, value: currentValue } : skill
                 )
             );
-            console.log(currentValue)
         }
 
     }, [currentValue]);

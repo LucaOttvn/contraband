@@ -1,47 +1,57 @@
 'use client'
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
-import { Player, Skill } from "./context";
+import { ContextEntities, Player, Skill, updateLocalStorage } from "./context";
 import Profile from "./components/Profile";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 
 export default function Home() {
 
-
-
   const [player, setPlayer] = useState<Player>({ name: '', password: '' })
-  const [fullScreen, setFulScreen] = useState(true)
   const [showingLoader, setShowingLoader] = useState(false)
-  const [currentPage, setCurrentPage] = useState<number>()
+  const [currentPage, setCurrentPage] = useState<number>(0)
+  const [playersFromDB, setPlayersFromDB] = useState<Player[]>([])
+
 
   const pages: { [key: number]: React.JSX.Element } = {
-    0: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} setShowingLoader={setShowingLoader} />,
+    0: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} setShowingLoader={setShowingLoader} playersFromDB={playersFromDB} />,
     1: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} />,
   }
 
-
   useEffect(() => {
-    if (localStorage.getItem('Player')) {
-      setPlayer(JSON.parse(localStorage.getItem('Player')!))
-      setCurrentPage(1)
-    } else {
-      setCurrentPage(0)
+
+    (async () => {
+      setPlayersFromDB(await getCollection('players') as unknown as Player[])
+    })()
+
+
+
+    if (localStorage.getItem(ContextEntities.Player)) {
+      setPlayer(JSON.parse(localStorage.getItem(ContextEntities.Player)!))
     }
 
-    const handleFullScreenChange = () => {
-      setFulScreen(!document.fullscreenElement)
-    };
-
-    document.addEventListener("fullscreenchange", handleFullScreenChange);
-
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullScreenChange);
-    };
-
   }, []);
+
+  useEffect(() => {
+    console.log(playersFromDB)
+  }, [playersFromDB]);
+
+  function choosePage() {
+    setCurrentPage(!player.name && !player.password ? 0 : 1)
+  }
+
+  useEffect(() => {
+    choosePage()
+    updatePlayerState()
+  }, [player]);
+
+  async function updatePlayerState() {
+    let players = await getCollection('players')
+    // if a player with that name and psw exists
+    let newPlayer = players.find((p: any) => p.name == player.name && p.password == player.password)
+    if (newPlayer) updatePlayer(newPlayer!.id, player)
+  }
 
   useEffect(() => {
     if (showingLoader) {
@@ -50,23 +60,6 @@ export default function Home() {
       }, 2000)
     }
   }, [showingLoader]);
-
-  useEffect(() => {
-    test()
-  }, [player]);
-
-  async function test() {
-    let players = await getCollection('players')
-    let newPlayer = players.find((p: any) => p.name == player.name && p.password == player.password)
-    console.log(player)
-    if (newPlayer) updatePlayer(newPlayer!.id, player)
-  }
-
-  function goFullScreen() {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    }
-  };
 
   return (
     <div className="h-full center p-5">

@@ -1,5 +1,5 @@
-import React, { useState, FormEvent, useEffect } from 'react';
-import { Player } from '../context';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
+import { ContextEntities, Player, updateLocalStorage } from '../context';
 import TextStagger from './TextStagger';
 import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
 
@@ -7,95 +7,93 @@ import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
 
 interface LoginProps {
     setShowingLoader: React.Dispatch<React.SetStateAction<boolean>>
-    setCurrentPage: React.Dispatch<React.SetStateAction<number | undefined>>
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
+    playersFromDB: Player[]
 }
 
 export default function Login(props: LoginProps) {
 
-    function handleSubmit(event: FormEvent) {
-        event.preventDefault(); // Prevent the default form submission behavior
-        if (props.player.name) {
-            props.setCurrentPage(1);
+    const formRef = useRef(null);
+
+    async function submit(e: any) {
+        e.preventDefault()
+
+        let formData
+        if (formRef.current) formData = Object.fromEntries(new FormData(formRef.current).entries())
+
+        if (formData) {
+            if (formData.name && formData.password) {
+                props.setShowingLoader(true)
+
+                let existingPlayer = props.playersFromDB.find(player => player.name == formData.name)
+
+                if (existingPlayer) {
+                    if (formData.password != existingPlayer.password) {
+                        alert('Wrong password')
+                    }
+                    else {
+                        nextPage(existingPlayer)
+                    }
+                }
+                else {
+                    let newPlayer = await addPlayer(formData as unknown as Player)
+                    if (newPlayer) {
+                        nextPage(newPlayer)
+                    }
+                    else {
+                        console.log('Player creation failed')
+                    }
+                    setTimeout(() => {
+                        props.setShowingLoader(false)
+                    }, 700)
+                }
+            }
+            else {
+                alert('Name or password are missing')
+            }
         }
-    };
-    function handleChange(key: keyof Player, value: string) {
-        if (props.player) props.setPlayer(prevState => ({
-            ...prevState,
-            [key]: value,
-        }));
     }
 
-
-    useEffect(() => {
-        console.log(props.player)
-    }, [props.player]);
+    function nextPage(result: Player) {
+        props.setPlayer(result)
+        localStorage.setItem('userId', result.id!)
+        props.setCurrentPage(1)
+    }
 
     return (
         <div
             className='w-full h-full flex flex-col items-center gap-10'
         >
             <TextStagger text='Login' title={true} />
-            <div className='flex flex-col items-start gap-3'>
-                <div className='flex flex-col items-start'>
-                    <label htmlFor='name'>Name</label>
-                    <input
-                        id='name'
-                        type='text'
-                        className='generalInput'
-                        placeholder='Insert name'
-                        value={props.player ? props.player.name : ''}
-                        onChange={(e) => { handleChange('name', e.target.value) }}
-                    />
+            <form ref={formRef} onSubmit={submit} className='center flex-col gap-10'>
+                <div className='flex flex-col items-start gap-3'>
+                    <div className='flex flex-col items-start'>
+                        <label htmlFor='name'>Name</label>
+                        <input
+                            id='name'
+                            name='name'
+                            type='text'
+                            className='generalInput'
+                            placeholder='Insert name'
+                            defaultValue={props.player ? props.player.name : ''}
+                        />
+                    </div>
+                    <div className='flex flex-col items-start'>
+                        <label htmlFor='password'>Password</label>
+                        <input
+                            id='password'
+                            name='password'
+                            type='password'
+                            className='generalInput'
+                            placeholder='Insert password'
+                            defaultValue={props.player ? props.player.password : ''}
+                        />
+                    </div>
                 </div>
-                <div className='flex flex-col items-start'>
-                    <label htmlFor='password'>Password</label>
-                    <input
-                        id='password'
-                        type='password'
-                        className='generalInput'
-                        placeholder='Insert password'
-                        value={props.player ? props.player.password : ''}
-                        onChange={(e) => { handleChange('password', e.target.value) }}
-                    />
-                </div>
-            </div>
-
-            <button
-                onClick={async () => {
-                    if (props.player.name && props.player.password) {
-                        props.setShowingLoader(true)
-                        
-                        let players = await getCollection('players') as unknown as Player[]
-
-                        let existingPlayerName = players.find(player => player.name == props.player.name)
-                        if (existingPlayerName) {
-                            if (existingPlayerName.password == props.player.password) {
-                                localStorage.setItem('Player', JSON.stringify(props.player))
-                                props.setCurrentPage(1)
-                            }
-                            else {
-                                alert('Wrong password')
-                            }
-                        }
-                        else {
-                            await addPlayer(props.player)
-                            localStorage.setItem('Player', JSON.stringify(props.player))
-                            props.setCurrentPage(1)
-                        }
-                        setTimeout(()=>{
-                            props.setShowingLoader(false)
-                        }, 700)
-                    }
-                    else {
-                        alert('Name or password are missing')
-                    }
-                }}
-                className='generalButton'
-            >
-                Confirm
-            </button>
+                <button type="submit" className='generalButton'>Submit</button>
+            </form>
         </div>
     );
 }
