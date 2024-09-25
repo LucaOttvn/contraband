@@ -1,14 +1,16 @@
 'use client'
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
-import { ContextEntities, Player, Skill, updateLocalStorage } from "./context";
+import { findPlayer, localStorageItems, Player, Skill, updateLocalStorage } from "./context";
 import Profile from "./components/Profile";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 
 export default function Home() {
 
-  const [player, setPlayer] = useState<Player>({ name: '', password: '' })
+  const basicPlayer = { name: '', password: '' }
+
+  const [player, setPlayer] = useState<Player>(basicPlayer)
   const [showingLoader, setShowingLoader] = useState(false)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [playersFromDB, setPlayersFromDB] = useState<Player[]>([])
@@ -25,16 +27,23 @@ export default function Home() {
       setPlayersFromDB(await getCollection('players') as unknown as Player[])
     })()
 
-
-
-    if (localStorage.getItem(ContextEntities.Player)) {
-      setPlayer(JSON.parse(localStorage.getItem(ContextEntities.Player)!))
-    }
-
   }, []);
 
   useEffect(() => {
-    console.log(playersFromDB)
+    if (localStorage.getItem(localStorageItems.playerId) && playersFromDB.length > 0) {
+      (async () => {
+        console.log(playersFromDB)
+        const foundPlayer = await findPlayer(playersFromDB, localStorage.getItem(localStorageItems.playerId)!)
+        if (foundPlayer) {
+          setPlayer(foundPlayer)
+        }
+        else {
+          localStorage.removeItem(localStorageItems.playerId)
+          setPlayer(basicPlayer)
+        }
+      })()
+      // setPlayer
+    }
   }, [playersFromDB]);
 
   function choosePage() {
@@ -43,14 +52,14 @@ export default function Home() {
 
   useEffect(() => {
     choosePage()
-    updatePlayerState()
   }, [player]);
 
   async function updatePlayerState() {
-    let players = await getCollection('players')
     // if a player with that name and psw exists
-    let newPlayer = players.find((p: any) => p.name == player.name && p.password == player.password)
-    if (newPlayer) updatePlayer(newPlayer!.id, player)
+    if (player.id) {
+      let newPlayer: Player | undefined = await findPlayer(playersFromDB, player.id)
+      if (newPlayer && newPlayer.id) updatePlayer(newPlayer!.id!, player)
+    }
   }
 
   useEffect(() => {

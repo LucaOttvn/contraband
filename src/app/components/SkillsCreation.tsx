@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TextStagger from './TextStagger';
-import { ContextEntities, Player, Skill, updateLocalStorage } from '../context';
+import { Player, Skill, updateLocalStorage } from '../context';
 import NumberSelector from './microComponents/NumberSelector';
 
 interface SkillsCreationProps {

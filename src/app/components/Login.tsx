@@ -1,9 +1,7 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import { ContextEntities, Player, updateLocalStorage } from '../context';
+import { Player, updateLocalStorage } from '../context';
 import TextStagger from './TextStagger';
 import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
-
-
 
 interface LoginProps {
     setShowingLoader: React.Dispatch<React.SetStateAction<boolean>>
@@ -58,7 +56,7 @@ export default function Login(props: LoginProps) {
 
     function nextPage(result: Player) {
         props.setPlayer(result)
-        localStorage.setItem('userId', result.id!)
+        localStorage.setItem('playerId', result.id!)
         props.setCurrentPage(1)
     }
 

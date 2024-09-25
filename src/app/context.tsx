@@ -23,6 +23,11 @@ export function updateLocalStorage(method: number, itemName: string, data: any) 
     if (method == 1) localStorage.deleteItem(itemName, stringifiedData)
 }
 
-export enum ContextEntities {
-   Player = "player"
+// check if the player exists in the db
+export async function findPlayer (players: Player[], playerId: string) {
+    return players.find((player: any) => player.id == playerId)
+}
+
+export enum localStorageItems {
+    playerId = 'playerId'
 }
