@@ -1,11 +1,10 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import { Player, updateLocalStorage } from '../context';
+import { localStorageItems, pagesNames, Player, updateLocalStorage } from '../context';
 import TextStagger from './TextStagger';
 import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
 
 interface LoginProps {
-    setShowingLoader: React.Dispatch<React.SetStateAction<boolean>>
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+    setCurrentPage: React.Dispatch<React.SetStateAction<string>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
     playersFromDB: Player[]
@@ -13,17 +12,20 @@ interface LoginProps {
 
 export default function Login(props: LoginProps) {
 
+
     const formRef = useRef(null);
 
     async function submit(e: any) {
         e.preventDefault()
+
+        props.setCurrentPage(pagesNames.loader)
 
         let formData
         if (formRef.current) formData = Object.fromEntries(new FormData(formRef.current).entries())
 
         if (formData) {
             if (formData.name && formData.password) {
-                props.setShowingLoader(true)
+
 
                 let existingPlayer = props.playersFromDB.find(player => player.name == formData.name)
 
@@ -43,9 +45,6 @@ export default function Login(props: LoginProps) {
                     else {
                         console.log('Player creation failed')
                     }
-                    setTimeout(() => {
-                        props.setShowingLoader(false)
-                    }, 700)
                 }
             }
             else {
@@ -56,8 +55,8 @@ export default function Login(props: LoginProps) {
 
     function nextPage(result: Player) {
         props.setPlayer(result)
-        localStorage.setItem('playerId', result.id!)
-        props.setCurrentPage(1)
+        localStorage.setItem(localStorageItems.playerId, result.id!)
+        props.setCurrentPage(pagesNames.profile)
     }
 
     return (

@@ -1,7 +1,7 @@
 'use client'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
-import { findPlayer, localStorageItems, Player, Skill, updateLocalStorage } from "./context";
+import { dbCollections, findPlayer, localStorageItems, pagesNames, Player, Skill, updateLocalStorage } from "./context";
 import Profile from "./components/Profile";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
@@ -11,28 +11,30 @@ export default function Home() {
   const basicPlayer = { name: '', password: '' }
 
   const [player, setPlayer] = useState<Player>(basicPlayer)
-  const [showingLoader, setShowingLoader] = useState(false)
-  const [currentPage, setCurrentPage] = useState<number>(0)
+
+  const [currentPage, setCurrentPage] = useState<string>(pagesNames.loader)
   const [playersFromDB, setPlayersFromDB] = useState<Player[]>([])
 
 
-  const pages: { [key: number]: React.JSX.Element } = {
-    0: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} setShowingLoader={setShowingLoader} playersFromDB={playersFromDB} />,
-    1: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} />,
+  const pages: { [key: string]: React.JSX.Element } = {
+    loader: <Loader></Loader>,
+    login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} playersFromDB={playersFromDB} />,
+    profile: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} />,
   }
 
-  useEffect(() => {
 
+
+  useEffect(() => {
     (async () => {
-      setPlayersFromDB(await getCollection('players') as unknown as Player[])
+      setPlayersFromDB(await getCollection(dbCollections.players) as unknown as Player[])
     })()
 
   }, []);
 
+  // when the get playersFromDB is completed, search for the player.id in there and, if found, set player as it, otherwise return to login
   useEffect(() => {
     if (localStorage.getItem(localStorageItems.playerId) && playersFromDB.length > 0) {
       (async () => {
-        console.log(playersFromDB)
         const foundPlayer = await findPlayer(playersFromDB, localStorage.getItem(localStorageItems.playerId)!)
         if (foundPlayer) {
           setPlayer(foundPlayer)
@@ -47,7 +49,7 @@ export default function Home() {
   }, [playersFromDB]);
 
   function choosePage() {
-    setCurrentPage(!player.name && !player.password ? 0 : 1)
+    setCurrentPage(!player.name && !player.password ? pagesNames.login : pagesNames.profile)
   }
 
   useEffect(() => {
@@ -62,19 +64,10 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    if (showingLoader) {
-      setTimeout(() => {
-        setShowingLoader(false)
-      }, 2000)
-    }
-  }, [showingLoader]);
 
   return (
     <div className="h-full center p-5">
-      {
-        showingLoader ? <Loader /> : currentPage != undefined && pages[currentPage]
-      }
+      {currentPage != undefined && pages[currentPage]}
     </div>
   );
 }

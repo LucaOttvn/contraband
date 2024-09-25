@@ -24,10 +24,18 @@ export function updateLocalStorage(method: number, itemName: string, data: any) 
 }
 
 // check if the player exists in the db
-export async function findPlayer (players: Player[], playerId: string) {
+export async function findPlayer(players: Player[], playerId: string) {
     return players.find((player: any) => player.id == playerId)
 }
 
 export enum localStorageItems {
     playerId = 'playerId'
+}
+export enum pagesNames {
+    loader = 'loader',
+    login = 'login',
+    profile = 'profile',
+}
+export enum dbCollections {
+    players = 'players',
 }

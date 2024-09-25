@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {Player } from '../context';
+import {localStorageItems, pagesNames, Player } from '../context';
 import SkillsCreation from './SkillsCreation';
 import { getCollection, updatePlayer } from '../../../utils/firestoreQueries';
 import ProfileOverview from './ProfileOverview';
 
 interface ProfileProps {
   player: Player
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>
   setPlayer: React.Dispatch<React.SetStateAction<Player>>
 }
 
@@ -22,8 +22,8 @@ export default function Profile(props: ProfileProps) {
   return (
     <div className='w-full h-full flex flex-col items-start gap-10'>
       <button className='generalButton' onClick={() => {
-        localStorage.removeItem('player')
-        props.setCurrentPage(0)
+        localStorage.removeItem(localStorageItems.playerId)
+        props.setCurrentPage(pagesNames.login)
       }}>Logout</button>
 
       {
