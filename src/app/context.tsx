@@ -14,7 +14,6 @@ export interface Skill {
     value: number
 }
 
-
 // 0 = setItem
 // 1 = deleteItem
 export function updateLocalStorage(method: number, itemName: string, data: any) {

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
 
-import Profile from "./components/Profile";
+import Main from "./components/Main";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 import { Player, findPlayer } from "./context";
@@ -14,12 +14,12 @@ export default function Home() {
 
   const [player, setPlayer] = useState<Player>(basicPlayer)
   const [currentPage, setCurrentPage] = useState<string>('')
-  const [activePlayers, setActivePlayers] = useState<Player[]>([])
+  const [players, setPlayers] = useState<Player[]>([])
 
   const pages: { [key: string]: React.JSX.Element } = {
     loader: <Loader></Loader>,
-    login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} activePlayers={activePlayers} />,
-    profile: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} activePlayers={activePlayers} setActivePlayers={setActivePlayers} />,
+    login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
+    profile: <Main player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} players={players} setPlayers={setPlayers} />,
   }
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Home() {
       let playersFromDB = await getCollection(dbCollections.players) as unknown as Player[]
       playersFromDB.filter(player => player.status == statuses.online)
       console.log(playersFromDB)
-      setActivePlayers(playersFromDB)
+      setPlayers(playersFromDB)
     })()
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -44,33 +44,17 @@ export default function Home() {
   }, []);
 
   async function handleVisibilityChange() {
-
-    if (document.hidden) {
-      console.log('User is not using the app');
-
-      setPlayer((prevPlayer) => ({
-        ...prevPlayer,
-        status: statuses.offline,
-      }));
-
-      console.log(player)
-
-    } else {
-      console.log('User is using the app');
-
-      setPlayer((prevPlayer) => ({
-        ...prevPlayer,
-        status: statuses.online,
-      }));
-
-    }
+    setPlayer((prevPlayer) => ({
+      ...prevPlayer,
+      status: document.hidden ? statuses.offline : statuses.online,
+    }));
   }
 
-  // when the get activeplayers is completed, search for the player.id in there and, if found, set player as it, otherwise return to login
+  // when the get players is completed, search for the player.id in there and, if found, set player as it, otherwise return to login
   useEffect(() => {
-    if (localStorage.getItem(localStorageItems.playerId) && activePlayers.length > 0) {
+    if (localStorage.getItem(localStorageItems.playerId) && players.length > 0) {
       (async () => {
-        const foundPlayer = await findPlayer(activePlayers, localStorage.getItem(localStorageItems.playerId)!)
+        const foundPlayer = await findPlayer(players, localStorage.getItem(localStorageItems.playerId)!)
         if (foundPlayer) {
           setPlayer(foundPlayer)
           setCurrentPage(pagesNames.profile)
@@ -85,12 +69,15 @@ export default function Home() {
     if (!localStorage.getItem(localStorageItems.playerId)) {
       setCurrentPage(pagesNames.login)
     }
-  }, [activePlayers]);
-
+  }, [players]);
 
   useEffect(() => {
-    if (player.id) updatePlayer(player.id, player)
+    if (player.id) {
+      console.log(player)
+      updatePlayer(player.id, player)
+    }
   }, [player]);
+
 
   return (
     <div className="h-full center p-5">

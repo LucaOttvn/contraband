@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
 
 import TextStagger from './TextStagger';
-import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
+import { addPlayer, getCollection, updatePlayer } from '../../../utils/firestoreQueries'
 import { Player } from '../context';
 import { pagesNames, localStorageItems, statuses } from '../enums';
 
@@ -9,7 +9,7 @@ interface LoginProps {
     setCurrentPage: React.Dispatch<React.SetStateAction<string>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
-    activePlayers: Player[]
+    players: Player[]
 }
 
 export default function Login(props: LoginProps) {
@@ -27,7 +27,7 @@ export default function Login(props: LoginProps) {
         if (formData) {
             if (formData.name && formData.password) {
 
-                let existingPlayer = props.activePlayers.find(player => player.name == formData.name)
+                let existingPlayer = props.players.find(player => player.name == formData.name)
 
                 if (existingPlayer) {
                     if (formData.password != existingPlayer.password) {
@@ -36,14 +36,11 @@ export default function Login(props: LoginProps) {
                     }
                     else {
                         existingPlayer.status = statuses.online
-                        props.setPlayer(existingPlayer)
-                        console.log(props.player)
                         nextPage(existingPlayer)
                     }
                 }
                 else {
-                    let newPlayer = await addPlayer({status: statuses.online, ...formData} as unknown as Player)
-                    console.log(newPlayer)
+                    let newPlayer = await addPlayer({ status: statuses.online, ...formData } as unknown as Player)
                     if (newPlayer) {
                         nextPage(newPlayer)
                     }

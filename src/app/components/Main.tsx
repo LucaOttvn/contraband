@@ -4,14 +4,15 @@ import { Player } from '../context';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../utils/firebaseConfig';
 import { updatePlayer } from '../../../utils/firestoreQueries';
+import PlayersList from './PlayersList';
 
 
 interface ProfileProps {
   player: Player
-  activePlayers: Player[]
+  players: Player[]
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>
   setPlayer: React.Dispatch<React.SetStateAction<Player>>
-  setActivePlayers: React.Dispatch<React.SetStateAction<Player[]>>
+  setPlayers: React.Dispatch<React.SetStateAction<Player[]>>
 }
 
 export default function Profile(props: ProfileProps) {
@@ -33,25 +34,15 @@ export default function Profile(props: ProfileProps) {
         return player;
       });
 
-      props.setActivePlayers(players);
-
-      console.log("Updated players array:", players);
+      props.setPlayers(players);
     });
   }, []);
 
-  async function logout() {
-
+  function logout() {
     props.setPlayer((prevPlayer) => ({
       ...prevPlayer,
       status: statuses.offline,
     }));
-
-    if (props.player.id) {
-      let updatedPlayer = await updatePlayer(props.player.id, props.player)
-      console.log(updatedPlayer)
-    } else {
-      alert('player id not exisitg')
-    }
     localStorage.removeItem(localStorageItems.playerId)
     props.setCurrentPage(pagesNames.login)
   }
@@ -61,12 +52,8 @@ export default function Profile(props: ProfileProps) {
       <button className='generalButton' onClick={logout}><img src="/icons/logout.svg" alt="" /></button>
 
       <span>{props.player.name}</span>
-      <span className='title'>Active players</span>
-      <div className='flex items-start flex-col'>
-        {props.activePlayers.map((player, index) => {
-          return <span key={'player' + index}>{'- ' + player.name + ' is ' + player.status}</span>
-        })}
-      </div>
+      <PlayersList activePlayers={props.players}/>
+      
     </div>
   );
 }
