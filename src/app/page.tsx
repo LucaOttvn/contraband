@@ -13,13 +13,13 @@ export default function Home() {
   const basicPlayer = { name: '', password: '', status: statuses.offline }
 
   const [player, setPlayer] = useState<Player>(basicPlayer)
-  const [currentPage, setCurrentPage] = useState<string>(pagesNames.loader)
+  const [currentPage, setCurrentPage] = useState<string>('')
   const [activePlayers, setActivePlayers] = useState<Player[]>([])
 
   const pages: { [key: string]: React.JSX.Element } = {
     loader: <Loader></Loader>,
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} activePlayers={activePlayers} />,
-    profile: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} activePlayers={activePlayers} setActivePlayers={setActivePlayers}/>,
+    profile: <Profile player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} activePlayers={activePlayers} setActivePlayers={setActivePlayers} />,
   }
 
   useEffect(() => {
@@ -29,7 +29,42 @@ export default function Home() {
       console.log(playersFromDB)
       setActivePlayers(playersFromDB)
     })()
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // window.addEventListener('focus', () => {
+    //   console.log('User is active in the app');
+    //   // Set user status to online
+    // });
+
+    // window.addEventListener('blur', () => {
+    //   console.log('User is away from the app');
+    //   // Set user status to offline
+    // });
   }, []);
+
+  async function handleVisibilityChange() {
+
+    if (document.hidden) {
+      console.log('User is not using the app');
+
+      setPlayer((prevPlayer) => ({
+        ...prevPlayer,
+        status: statuses.offline,
+      }));
+
+      console.log(player)
+
+    } else {
+      console.log('User is using the app');
+
+      setPlayer((prevPlayer) => ({
+        ...prevPlayer,
+        status: statuses.online,
+      }));
+
+    }
+  }
 
   // when the get activeplayers is completed, search for the player.id in there and, if found, set player as it, otherwise return to login
   useEffect(() => {
@@ -52,6 +87,10 @@ export default function Home() {
     }
   }, [activePlayers]);
 
+
+  useEffect(() => {
+    if (player.id) updatePlayer(player.id, player)
+  }, [player]);
 
 
   return (

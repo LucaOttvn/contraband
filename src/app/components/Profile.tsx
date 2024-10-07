@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { localStorageItems, pagesNames, statuses } from '../enums';
+import { dbCollections, localStorageItems, pagesNames, statuses } from '../enums';
 import { Player } from '../context';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../utils/firebaseConfig';
+import { updatePlayer } from '../../../utils/firestoreQueries';
 
 
 interface ProfileProps {
@@ -15,7 +16,7 @@ interface ProfileProps {
 
 export default function Profile(props: ProfileProps) {
 
-  const playersCollectionRef = collection(db, 'players');
+  const playersCollectionRef = collection(db, dbCollections.players);
   useEffect(() => {
     onSnapshot(playersCollectionRef, (snapshot) => {
 
@@ -34,17 +35,30 @@ export default function Profile(props: ProfileProps) {
 
       props.setActivePlayers(players);
 
-
       console.log("Updated players array:", players);
     });
   }, []);
 
+  async function logout() {
+
+    props.setPlayer((prevPlayer) => ({
+      ...prevPlayer,
+      status: statuses.offline,
+    }));
+
+    if (props.player.id) {
+      let updatedPlayer = await updatePlayer(props.player.id, props.player)
+      console.log(updatedPlayer)
+    } else {
+      alert('player id not exisitg')
+    }
+    localStorage.removeItem(localStorageItems.playerId)
+    props.setCurrentPage(pagesNames.login)
+  }
+
   return (
     <div className='w-full h-full flex flex-col items-start gap-10'>
-      <button className='generalButton' onClick={() => {
-        localStorage.removeItem(localStorageItems.playerId)
-        props.setCurrentPage(pagesNames.login)
-      }}>Logout</button>
+      <button className='generalButton' onClick={logout}>Logout</button>
 
       <span>{props.player.name}</span>
       <span className='title'>Active players</span>

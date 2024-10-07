@@ -32,9 +32,10 @@ export default function Login(props: LoginProps) {
                 if (existingPlayer) {
                     if (formData.password != existingPlayer.password) {
                         alert('Wrong password')
+                        props.setCurrentPage(pagesNames.login)
                     }
                     else {
-                        existingPlayer.status = statuses.online
+                        // existingPlayer.status = statuses.online
                         nextPage(existingPlayer)
                     }
                 }
@@ -45,11 +46,13 @@ export default function Login(props: LoginProps) {
                     }
                     else {
                         alert('Player creation failed')
+                        props.setCurrentPage(pagesNames.login)
                     }
                 }
             }
             else {
                 alert('Name or password are missing')
+                props.setCurrentPage(pagesNames.login)
             }
         }
     }
