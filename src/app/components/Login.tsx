@@ -3,13 +3,13 @@ import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import TextStagger from './TextStagger';
 import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
 import { Player } from '../context';
-import { pagesNames, localStorageItems } from '../enums';
+import { pagesNames, localStorageItems, statuses } from '../enums';
 
 interface LoginProps {
     setCurrentPage: React.Dispatch<React.SetStateAction<string>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
-    players: Player[]
+    activePlayers: Player[]
 }
 
 export default function Login(props: LoginProps) {
@@ -27,23 +27,24 @@ export default function Login(props: LoginProps) {
         if (formData) {
             if (formData.name && formData.password) {
 
-                let existingPlayer = props.players.find(player => player.name == formData.name)
+                let existingPlayer = props.activePlayers.find(player => player.name == formData.name)
 
                 if (existingPlayer) {
                     if (formData.password != existingPlayer.password) {
                         alert('Wrong password')
                     }
                     else {
+                        existingPlayer.status = statuses.online
                         nextPage(existingPlayer)
                     }
                 }
                 else {
-                    let newPlayer = await addPlayer(formData as unknown as Player)
+                    let newPlayer = await addPlayer({status: statuses.online, ...formData} as unknown as Player)
                     if (newPlayer) {
                         nextPage(newPlayer)
                     }
                     else {
-                        console.log('Player creation failed')
+                        alert('Player creation failed')
                     }
                 }
             }
@@ -54,6 +55,7 @@ export default function Login(props: LoginProps) {
     }
 
     function nextPage(result: Player) {
+        console.log(result)
         props.setPlayer(result)
         localStorage.setItem(localStorageItems.playerId, result.id!)
         props.setCurrentPage(pagesNames.profile)
