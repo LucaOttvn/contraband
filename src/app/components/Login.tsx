@@ -35,12 +35,15 @@ export default function Login(props: LoginProps) {
                         props.setCurrentPage(pagesNames.login)
                     }
                     else {
-                        // existingPlayer.status = statuses.online
+                        existingPlayer.status = statuses.online
+                        props.setPlayer(existingPlayer)
+                        console.log(props.player)
                         nextPage(existingPlayer)
                     }
                 }
                 else {
                     let newPlayer = await addPlayer({status: statuses.online, ...formData} as unknown as Player)
+                    console.log(newPlayer)
                     if (newPlayer) {
                         nextPage(newPlayer)
                     }
