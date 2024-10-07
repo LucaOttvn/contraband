@@ -1,12 +1,14 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
-
-import Main from "./components/Main";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 import { Player, findPlayer } from "./context";
 import { pagesNames, dbCollections, localStorageItems, statuses } from "./enums";
+import BottomBar from "./components/bottomBar/TopBar";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../utils/firebaseConfig";
+import PlayersList from "./components/PlayersList";
 
 export default function Home() {
 
@@ -19,8 +21,11 @@ export default function Home() {
   const pages: { [key: string]: React.JSX.Element } = {
     loader: <Loader></Loader>,
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
-    profile: <Main player={player} setCurrentPage={setCurrentPage} setPlayer={setPlayer} players={players} setPlayers={setPlayers} />,
+    playersList: <PlayersList activePlayers={players}/>
   }
+
+
+  const playersCollectionRef = collection(db, dbCollections.players);
 
   useEffect(() => {
     (async () => {
@@ -30,17 +35,22 @@ export default function Home() {
       setPlayers(playersFromDB)
     })()
 
+    onSnapshot(playersCollectionRef, (snapshot) => {
+      const players = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        const player: Player = {
+          id: doc.id,
+          name: data.name,
+          password: data.password,
+          status: data.status,
+        };
+
+        return player;
+      });
+      setPlayers(players);
+    });
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    // window.addEventListener('focus', () => {
-    //   console.log('User is active in the app');
-    //   // Set user status to online
-    // });
-
-    // window.addEventListener('blur', () => {
-    //   console.log('User is away from the app');
-    //   // Set user status to offline
-    // });
   }, []);
 
   async function handleVisibilityChange() {
@@ -57,7 +67,7 @@ export default function Home() {
         const foundPlayer = await findPlayer(players, localStorage.getItem(localStorageItems.playerId)!)
         if (foundPlayer) {
           setPlayer(foundPlayer)
-          setCurrentPage(pagesNames.profile)
+          setCurrentPage(pagesNames.playersList)
         }
         else {
           localStorage.removeItem(localStorageItems.playerId)
@@ -80,8 +90,12 @@ export default function Home() {
 
 
   return (
-    <div className="h-full center p-5">
-      {currentPage != undefined && pages[currentPage]}
+    <div className="h-full flex flex-col items-start relative">
+      {currentPage != pagesNames.login && <BottomBar setCurrentPage={setCurrentPage} setPlayer={setPlayer}/>}
+      <span>{player.name}</span>
+      <div className="p-5 w-full">
+        {currentPage != undefined && pages[currentPage]}
+      </div>
     </div>
   );
 }

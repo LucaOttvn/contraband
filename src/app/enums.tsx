@@ -5,7 +5,13 @@ export enum localStorageItems {
 export enum pagesNames {
     loader = 'loader',
     login = 'login',
-    profile = 'profile',
+    playersList = "playersList",
+}
+
+export enum topBarPages {
+    logout = 'logout',
+    players = 'players',
+    player = 'player',
 }
 
 export enum dbCollections {
@@ -16,3 +22,4 @@ export enum statuses {
     online = 'online',
     offline = 'offline',
 }
+

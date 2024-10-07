@@ -61,7 +61,7 @@ export default function Login(props: LoginProps) {
         console.log(result)
         props.setPlayer(result)
         localStorage.setItem(localStorageItems.playerId, result.id!)
-        props.setCurrentPage(pagesNames.profile)
+        props.setCurrentPage(pagesNames.playersList)
     }
 
     return (
