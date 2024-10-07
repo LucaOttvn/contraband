@@ -1,17 +1,18 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import { localStorageItems, pagesNames, Player, updateLocalStorage } from '../context';
+
 import TextStagger from './TextStagger';
 import { addPlayer, getCollection } from '../../../utils/firestoreQueries'
+import { Player } from '../context';
+import { pagesNames, localStorageItems } from '../enums';
 
 interface LoginProps {
     setCurrentPage: React.Dispatch<React.SetStateAction<string>>
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
-    playersFromDB: Player[]
+    players: Player[]
 }
 
 export default function Login(props: LoginProps) {
-
 
     const formRef = useRef(null);
 
@@ -26,8 +27,7 @@ export default function Login(props: LoginProps) {
         if (formData) {
             if (formData.name && formData.password) {
 
-
-                let existingPlayer = props.playersFromDB.find(player => player.name == formData.name)
+                let existingPlayer = props.players.find(player => player.name == formData.name)
 
                 if (existingPlayer) {
                     if (formData.password != existingPlayer.password) {

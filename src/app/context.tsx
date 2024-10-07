@@ -6,6 +6,7 @@ export interface Player {
     name: string,
     password: string,
     skills?: Skill[]
+    status: string
 }
 
 export interface Skill {
@@ -28,14 +29,3 @@ export async function findPlayer(players: Player[], playerId: string) {
     return players.find((player: any) => player.id == playerId)
 }
 
-export enum localStorageItems {
-    playerId = 'playerId'
-}
-export enum pagesNames {
-    loader = 'loader',
-    login = 'login',
-    profile = 'profile',
-}
-export enum dbCollections {
-    players = 'players',
-}
