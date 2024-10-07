@@ -92,7 +92,6 @@ export default function Home() {
     if (player.id) updatePlayer(player.id, player)
   }, [player]);
 
-
   return (
     <div className="h-full center p-5">
       {currentPage != undefined && pages[currentPage]}

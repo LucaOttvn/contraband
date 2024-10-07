@@ -58,7 +58,7 @@ export default function Profile(props: ProfileProps) {
 
   return (
     <div className='w-full h-full flex flex-col items-start gap-10'>
-      <button className='generalButton' onClick={logout}>Logout</button>
+      <button className='generalButton' onClick={logout}><img src="/icons/logout.svg" alt="" /></button>
 
       <span>{props.player.name}</span>
       <span className='title'>Active players</span>
