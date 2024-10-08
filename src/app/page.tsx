@@ -5,10 +5,11 @@ import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 import { Player, findPlayer } from "./context";
 import { pagesNames, dbCollections, localStorageItems, statuses } from "./enums";
-import BottomBar from "./components/bottomBar/TopBar";
+import BottomBar from "./components/topBar/TopBar";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
 import PlayersList from "./components/PlayersList";
+import PlayerDetail from "./components/PlayerDetail";
 
 export default function Home() {
 
@@ -21,7 +22,8 @@ export default function Home() {
   const pages: { [key: string]: React.JSX.Element } = {
     loader: <Loader></Loader>,
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
-    playersList: <PlayersList activePlayers={players}/>
+    playersList: <PlayersList activePlayers={players}/>,
+    playerDetail: <PlayerDetail/>
   }
 
 
@@ -88,11 +90,9 @@ export default function Home() {
     }
   }, [player]);
 
-
   return (
     <div className="h-full flex flex-col items-start relative">
       {currentPage != pagesNames.login && <BottomBar setCurrentPage={setCurrentPage} setPlayer={setPlayer}/>}
-      <span>{player.name}</span>
       <div className="p-5 w-full">
         {currentPage != undefined && pages[currentPage]}
       </div>

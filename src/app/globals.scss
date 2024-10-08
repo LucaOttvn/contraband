@@ -8,9 +8,10 @@
   --black: #0b0b0b;
   --green: #24F08A;
   --transparentGreen: #4effa60a;
-  --lightGreen: #5dfaab;
+  --lightGreen: #83fabe;
   --darkGreen: #257a5e;
   --generalBoxShadow: var(--darkGreen) 0px 1px 10px;
+  --generalBRadius: 5px;
 }
 
 
@@ -52,7 +53,11 @@ body {
 }
 
 .generalButton {
-  border: solid 2px var(--darkGreen);
+  border-top: solid 2px var(--lightGreen);
+  border-left: solid 2px var(--lightGreen);
+  border-right: solid 2px var(--darkGreen);
+  border-bottom: solid 2px var(--darkGreen);
+
   display: flex;
   justify-content: center;
   align-items: center;

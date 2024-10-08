@@ -6,12 +6,11 @@ export enum pagesNames {
     loader = 'loader',
     login = 'login',
     playersList = "playersList",
+    playerDetail = "playerDetail",
 }
 
 export enum topBarPages {
     logout = 'logout',
-    players = 'players',
-    player = 'player',
 }
 
 export enum dbCollections {
