@@ -7,6 +7,7 @@ export enum pagesNames {
     login = 'login',
     playersList = "playersList",
     playerDetail = "playerDetail",
+    auction = "auction",
 }
 
 export enum topBarPages {

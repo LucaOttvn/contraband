@@ -10,7 +10,7 @@ interface BottomBarProps {
 
 export default function BottomBar(props: BottomBarProps) {
 
-  let topBarButtons = [topBarPages.logout, pagesNames.playersList, pagesNames.playerDetail]
+  let topBarButtons = [topBarPages.logout, pagesNames.playersList, pagesNames.auction]
 
   function logout() {
     props.setPlayer((prevPlayer) => ({
@@ -22,8 +22,7 @@ export default function BottomBar(props: BottomBarProps) {
   }
 
   return (
-    <div id='bottomBar' className='w-full start gap-1'>
-
+    <div id='bottomBar' className='w-full start gap-2 p-2'>
       {topBarButtons.map((button, index) => {
         return <button key={' topBarBtn' + index} className='generalButton h-full center' style={{width: '2.5rem', height: '2.5rem'}} onClick={() => {
           if (button == topBarPages.logout) {
