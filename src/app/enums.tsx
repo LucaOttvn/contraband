@@ -10,6 +10,11 @@ export enum pagesNames {
     auction = "auction",
 }
 
+export enum auctionSubPages {
+    characterCreation = 'characterCreation',
+    itemsTable = 'itemsTable',
+}
+
 export enum dbCollections {
     players = 'players',
 }
