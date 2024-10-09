@@ -24,9 +24,11 @@ export default function TextStagger(props: TextStaggerProps) {
         index
     }));
 
+    
+
     return (
         <motion.div
-            className={'staggered-text w-full text-center flex flex-wrap justify-center ' + (props.title ? ' title' : '')}
+            className={'staggered-text flex flex-wrap justify-start ' + (props.title ? ' title' : '')}
             initial='hidden'
             animate='visible'
         >

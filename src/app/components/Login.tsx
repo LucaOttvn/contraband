@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
 
-import TextStagger from './TextStagger';
+import TextStagger from './microComponents/TextStagger';
 import { addPlayer, getCollection, updatePlayer } from '../../../utils/firestoreQueries'
 import { Player } from '../context';
 import { pagesNames, localStorageItems, statuses } from '../enums';

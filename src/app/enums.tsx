@@ -10,10 +10,6 @@ export enum pagesNames {
     auction = "auction",
 }
 
-export enum topBarPages {
-    logout = 'logout',
-}
-
 export enum dbCollections {
     players = 'players',
 }

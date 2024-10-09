@@ -1,6 +1,6 @@
 import React from 'react';
 import { TailSpin } from 'react-loader-spinner'
-import TextStagger from "../components/TextStagger";
+import TextStagger from "./microComponents/TextStagger";
 
 interface LoaderProps { }
 

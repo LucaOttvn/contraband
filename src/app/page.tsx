@@ -5,11 +5,12 @@ import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
 import { Player, findPlayer } from "./context";
 import { pagesNames, dbCollections, localStorageItems, statuses } from "./enums";
-import BottomBar from "./components/topBar/TopBar";
+import BottomBar from "./components/TopBar";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
 import PlayersList from "./components/PlayersList";
 import PlayerDetail from "./components/PlayerDetail";
+import Auction from "./components/auction/Auction";
 
 export default function Home() {
 
@@ -23,9 +24,9 @@ export default function Home() {
     loader: <Loader></Loader>,
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
     playersList: <PlayersList activePlayers={players}/>,
-    playerDetail: <PlayerDetail/>
+    playerDetail: <PlayerDetail/>,
+    auction: <Auction/>
   }
-
 
   const playersCollectionRef = collection(db, dbCollections.players);
 
@@ -62,7 +63,7 @@ export default function Home() {
     }));
   }
 
-  // when the get players is completed, search for the player.id in there and, if found, set player as it, otherwise return to login
+  // when the get players is completed, search for the player.id and, if found, set player as it, otherwise return to login
   useEffect(() => {
     if (localStorage.getItem(localStorageItems.playerId) && players.length > 0) {
       (async () => {

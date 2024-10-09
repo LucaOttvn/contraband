@@ -1,7 +1,6 @@
 import React from 'react';
-import './style.scss'
 import { Player } from '@/app/context';
-import { localStorageItems, pagesNames, statuses, topBarPages } from '@/app/enums';
+import { localStorageItems, pagesNames, statuses } from '@/app/enums';
 
 interface BottomBarProps {
   setPlayer: React.Dispatch<React.SetStateAction<Player>>
@@ -10,7 +9,7 @@ interface BottomBarProps {
 
 export default function BottomBar(props: BottomBarProps) {
 
-  let topBarButtons = [topBarPages.logout, pagesNames.playersList, pagesNames.auction]
+  let topBarButtons = ['logout', pagesNames.playersList, pagesNames.auction]
 
   function logout() {
     props.setPlayer((prevPlayer) => ({
@@ -25,7 +24,7 @@ export default function BottomBar(props: BottomBarProps) {
     <div id='bottomBar' className='w-full start gap-2 p-2'>
       {topBarButtons.map((button, index) => {
         return <button key={' topBarBtn' + index} className='generalButton h-full center' style={{width: '2.5rem', height: '2.5rem'}} onClick={() => {
-          if (button == topBarPages.logout) {
+          if (button == 'logout') {
             logout()
           }
           else {
