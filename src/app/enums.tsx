@@ -8,7 +8,7 @@ export enum pagesNames {
     playersList = "playersList",
     playerDetail = "playerDetail",
     auction = "auction",
-    settings = 'settings'
+    settings = 'settings',
 }
 
 export enum auctionSubPages {
@@ -24,4 +24,3 @@ export enum statuses {
     online = 'online',
     offline = 'offline',
 }
-

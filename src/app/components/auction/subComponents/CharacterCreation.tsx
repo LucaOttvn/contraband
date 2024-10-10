@@ -1,31 +1,23 @@
 import React from 'react';
 import TextStagger from '../../microComponents/TextStagger';
 import { auctionSubPages } from '@/app/enums';
+import { characterCategories, characters, SubPage } from '@/app/context';
 
 interface CharacterCreationProps {
-    setCurrentSubPage: React.Dispatch<React.SetStateAction<auctionSubPages>>
+    setCurrentSubPage: React.Dispatch<React.SetStateAction<SubPage | undefined>>
 }
 
-interface CharacterCategory {
-    name: string,
-    icon: string,
-}
 
 export default function CharacterCreation(props: CharacterCreationProps) {
-
-    let characterCategories: CharacterCategory[] = [
-        { name: 'Pilots', icon: 'pilot'},
-        { name: 'Doctors', icon: 'doctor'},
-        { name: 'Engineers', icon: 'engineer'},
-        { name: 'Traders', icon: 'trader'},
-    ]
 
     return (
         <div className='center flex-col'>
             <TextStagger text='Auction - character selection' title={true} />
             <div className='flex items-center w-full flex-col mt-5 gap-4'>
                 {characterCategories.map((char, index) => {
-                    return <div className='characterCategory start gap-3 w-1/2' onClick={()=>{props.setCurrentSubPage(auctionSubPages.itemsTable)}}>
+                    return <div key={'characterCategory' + index} className='characterCategory start gap-3 w-1/2' onClick={() => {
+                        props.setCurrentSubPage({ page: auctionSubPages.itemsTable, characterType: index})
+                    }}>
                         <img src={"/imgs/" + char.icon + ".png"} width={70} />
                         <TextStagger text={char.name} title={false} />
                     </div>

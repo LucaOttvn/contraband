@@ -23,7 +23,7 @@ export default function Settings(props: SettingsProps) {
             <button className='generalButton' onClick={logout}>
                 <img src="/icons/logout.svg" alt="" />
             </button>
-            <TextStagger text='logout' title={false} />
+            <TextStagger text='Logout' title={false} />
         </div>
     );
 }

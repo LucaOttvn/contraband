@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
-import { Player, findPlayer } from "./context";
-import { pagesNames, dbCollections, localStorageItems, statuses } from "./enums";
-import BottomBar from "./components/TopBar";
+import { Player, SubPage, findPlayer } from "./context";
+import { pagesNames, dbCollections, localStorageItems, statuses, auctionSubPages } from "./enums";
+
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
 import PlayersList from "./components/PlayersList";
 import PlayerDetail from "./components/PlayerDetail";
 import Auction from "./components/auction/Auction";
 import Settings from "./components/Settings";
+import TopBar from "./components/TopBar";
 
 export default function Home() {
 
@@ -21,13 +22,15 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState<string>('')
   const [players, setPlayers] = useState<Player[]>([])
 
+  const [currentSubPage, setCurrentSubPage] = useState<SubPage | undefined>(undefined)
+
   const pages: { [key: string]: React.JSX.Element } = {
     loader: <Loader></Loader>,
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
-    playersList: <PlayersList activePlayers={players}/>,
-    playerDetail: <PlayerDetail/>,
-    auction: <Auction/>,
-    settings: <Settings setPlayer={setPlayer} setCurrentPage={setCurrentPage}/>,
+    playersList: <PlayersList activePlayers={players} />,
+    playerDetail: <PlayerDetail />,
+    auction: <Auction setCurrentSubPage={setCurrentSubPage} currentSubPage={currentSubPage}/>,
+    settings: <Settings setPlayer={setPlayer} setCurrentPage={setCurrentPage} />,
   }
 
   const playersCollectionRef = collection(db, dbCollections.players);
@@ -93,9 +96,13 @@ export default function Home() {
     }
   }, [player]);
 
+  useEffect(() => {
+    setCurrentSubPage(undefined)
+  }, [currentPage]);
+
   return (
     <div className="h-full flex flex-col items-start relative">
-      {currentPage != pagesNames.login && <BottomBar setCurrentPage={setCurrentPage} setPlayer={setPlayer}/>}
+      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} />}
       <div className="p-5 w-full">
         {currentPage != undefined && pages[currentPage]}
       </div>
