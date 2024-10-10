@@ -11,6 +11,7 @@ import { db } from "../../utils/firebaseConfig";
 import PlayersList from "./components/PlayersList";
 import PlayerDetail from "./components/PlayerDetail";
 import Auction from "./components/auction/Auction";
+import Settings from "./components/Settings";
 
 export default function Home() {
 
@@ -25,7 +26,8 @@ export default function Home() {
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
     playersList: <PlayersList activePlayers={players}/>,
     playerDetail: <PlayerDetail/>,
-    auction: <Auction/>
+    auction: <Auction/>,
+    settings: <Settings setPlayer={setPlayer} setCurrentPage={setCurrentPage}/>,
   }
 
   const playersCollectionRef = collection(db, dbCollections.players);

@@ -8,6 +8,7 @@ export enum pagesNames {
     playersList = "playersList",
     playerDetail = "playerDetail",
     auction = "auction",
+    settings = 'settings'
 }
 
 export enum auctionSubPages {
