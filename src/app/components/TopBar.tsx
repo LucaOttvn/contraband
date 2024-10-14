@@ -24,7 +24,7 @@ export default function TopBar(props: TopBarProps) {
       }}
       ><img src="/icons/back.svg"/></button>
       {topBarButtons.map((button, index) => {
-        return <button key={'topBarBtn' + index} className={props.currentPage == button ? ' clicked ' : ' ' + ' generalButton h-full center'} style={{ width: '2.5rem', height: '2.5rem' }} onClick={() => {
+        return <button key={'topBarBtn' + index} className={'generalButton h-full center ' + (button === props.currentPage ? 'clicked' : '')} style={{ width: '2.5rem', height: '2.5rem' }} onClick={() => {
           props.setCurrentPage(button)
         }}>
           <img src={"/icons/" + button + ".svg"} alt="" />

@@ -54,8 +54,8 @@ export async function findPlayer(players: Player[], playerId: string) {
 
 export let characterCategories = [
     { name: 'Pilots', icon: 'pilot' },
-    { name: 'Engineers', icon: 'doctor' },
-    { name: 'Doctors', icon: 'engineer' },
+    { name: 'Doctors', icon: 'doctor' },
+    { name: 'Engineers', icon: 'engineer' },
     { name: 'Traders', icon: 'trader' }
 ]
 
