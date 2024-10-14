@@ -1,21 +1,16 @@
-import { auctionSubPages } from "./enums"
+import { auctionSubPages, skillsNames } from "./enums"
 
 export interface Player {
     id?: string
     name: string
     password: string
-    skills?: Skill[]
     status: string
+    wallet: number
 }
 
-export interface SubPage {
-    page: auctionSubPages
-    characterType?: number
-}
-
-export interface Skill {
+export interface Character {
     name: string
-    value: number
+    type: Pilot | Doctor
 }
 
 export interface Pilot {
@@ -37,6 +32,17 @@ export interface Trader {
     name: string
     eloquence: number
 }
+
+export interface Skill {
+    name: skillsNames
+    value: number
+}
+
+export interface SubPage {
+    page: auctionSubPages
+    characterType?: number
+}
+
 
 // 0 = setItem
 // 1 = deleteItem

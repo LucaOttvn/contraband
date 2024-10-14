@@ -5,3 +5,17 @@
     border-right: solid 2px var(--darkerGreen);
     border-bottom: solid 2px var(--darkerGreen);
 }
+
+.custom-checkbox {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: black;
+    border: 2px solid var(--darkerGreen);
+    cursor: pointer;
+  }
+  
+  .custom-checkbox:checked {
+    background-color: var(--green);
+  }
+  

@@ -24,3 +24,10 @@ export enum statuses {
     online = 'online',
     offline = 'offline',
 }
+
+export enum skillsNames {
+    attack = 'attack',
+    cure = 'cure',
+    intelligence = 'intelligence',
+    eloquence = 'eloquence',
+}

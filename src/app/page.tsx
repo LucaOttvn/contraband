@@ -16,7 +16,7 @@ import TopBar from "./components/TopBar";
 
 export default function Home() {
 
-  const basicPlayer = { name: '', password: '', status: statuses.offline }
+  const basicPlayer = { name: '', password: '', status: statuses.offline, wallet: 0}
 
   const [player, setPlayer] = useState<Player>(basicPlayer)
   const [currentPage, setCurrentPage] = useState<string>('')
@@ -51,6 +51,7 @@ export default function Home() {
           name: data.name,
           password: data.password,
           status: data.status,
+          wallet: data.wallet
         };
 
         return player;
@@ -102,7 +103,7 @@ export default function Home() {
 
   return (
     <div className="h-full flex flex-col items-start relative">
-      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} />}
+      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} player={player}/>}
       <div className="p-5 w-full">
         {currentPage != undefined && pages[currentPage]}
       </div>

@@ -40,7 +40,7 @@ export default function Login(props: LoginProps) {
                     }
                 }
                 else {
-                    let newPlayer = await addPlayer({ status: statuses.online, ...formData } as unknown as Player)
+                    let newPlayer = await addPlayer({ status: statuses.online, wallet: 0, ...formData } as unknown as Player)
                     if (newPlayer) {
                         nextPage(newPlayer)
                     }
