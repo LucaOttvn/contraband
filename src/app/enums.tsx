@@ -31,3 +31,10 @@ export enum skillsNames {
     intelligence = 'intelligence',
     eloquence = 'eloquence',
 }
+
+export enum CharacterTypes {
+    pilot = 'pilot',
+    doctor = 'doctor',
+    engineer = 'engineer',
+    trader = 'trader',
+}

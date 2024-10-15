@@ -4,14 +4,14 @@ import { Doctor, Engineer, Pilot, uppercaseInitialLetter, Trader } from '@/app/c
 
 interface ItemsTableProps {
   list: Pilot[] | Doctor[] | Engineer[] | Trader[];
-  title: string;
+  title?: string;
 }
 
 export default function ItemsTable(props: ItemsTableProps) {
   return (
     <div>
       <div className='w-full center mb-5'>
-        <TextStagger text={props.title} title={true} />
+        <TextStagger text={props.title ?? ''} title={true} />
       </div>
       <div className='flex flex-col items-start gap-2'>
         {props.list.map((item, index) => (
@@ -22,7 +22,7 @@ export default function ItemsTable(props: ItemsTableProps) {
               className='custom-checkbox mr-2'
             />
             <label htmlFor={`checkbox-${index}`}>
-              <TextStagger text={`- ${item.name}`} title={false} />
+              <TextStagger text={'- ' + item.name} title={false} />
             </label>
             <span>|</span>
             <div className='flex flex-col'>

@@ -3,7 +3,7 @@ import './style.scss'
 import CharacterCreation from './subComponents/CharacterCreation';
 import { characterCategories, characters, Player, SubPage } from '@/app/context';
 import ItemsTable from './subComponents/ItemsTable';
-import { auctionSubPages } from '@/app/enums';
+import { auctionSubPages, CharacterTypes } from '@/app/enums';
 
 interface AuctionProps {
     setCurrentSubPage: React.Dispatch<React.SetStateAction<SubPage | undefined>>
@@ -14,7 +14,7 @@ export default function Auction(props: AuctionProps) {
 
     const subPages: { [key: string]: React.JSX.Element } = {
         characterCreation: <CharacterCreation setCurrentSubPage={props.setCurrentSubPage} />,
-        itemsTable: <ItemsTable title={props.currentSubPage?.characterType != undefined ? characterCategories[props.currentSubPage.characterType].name : ''} list={props.currentSubPage?.characterType != undefined ? characters[props.currentSubPage.characterType] : []} />
+        itemsTable: <ItemsTable title={props.currentSubPage ? characterCategories.find(c => c.name == props.currentSubPage!.characterType)?.name : ''} list={characters.filter(char => char.type == CharacterTypes.pilot)} />
     }
 
     useEffect(() => {
