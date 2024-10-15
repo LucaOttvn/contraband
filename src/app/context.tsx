@@ -42,10 +42,10 @@ export interface Trader extends Character {
 }
 
 export let characterCategories = [
-    { name: 'Pilots', icon: CharacterTypes.pilot },
-    { name: 'Doctors', icon: CharacterTypes.doctor },
-    { name: 'Engineers', icon: CharacterTypes.engineer },
-    { name: 'Traders', icon: CharacterTypes.trader }
+    { name: 'Pilots', type: CharacterTypes.pilot },
+    { name: 'Doctors', type: CharacterTypes.doctor },
+    { name: 'Engineers', type: CharacterTypes.engineer },
+    { name: 'Traders', type: CharacterTypes.trader }
 ]
 
 export interface Skill {

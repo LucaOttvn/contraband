@@ -17,9 +17,9 @@ export default function CharacterCreation(props: CharacterCreationProps) {
             <div className='flex items-center w-full flex-col mt-5 gap-4'>
                 {characterCategories.map((char, index) => {
                     return <div key={'characterCategory' + index} className='characterCategory start gap-3 w-1/2' onClick={() => {
-                        props.setCurrentSubPage({ page: auctionSubPages.itemsTable, characterType: props.currentSubPage?.characterType})
+                        props.setCurrentSubPage({ page: auctionSubPages.itemsTable, characterType: characterCategories[index].type})
                     }}>
-                        <img src={"/imgs/" + char.icon + ".png"} width={70} />
+                        <img src={"/imgs/" + char.type + ".png"} width={70} />
                         <TextStagger text={char.name} title={false} />
                     </div>
                 })}

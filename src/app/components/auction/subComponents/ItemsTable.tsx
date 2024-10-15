@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TextStagger from '../../microComponents/TextStagger';
 import { Doctor, Engineer, Pilot, uppercaseInitialLetter, Trader } from '@/app/context';
 
@@ -8,6 +8,10 @@ interface ItemsTableProps {
 }
 
 export default function ItemsTable(props: ItemsTableProps) {
+
+  useEffect(() => {
+    console.log(props.list)
+  }, []);
   return (
     <div>
       <div className='w-full center mb-5'>
