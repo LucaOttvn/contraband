@@ -10,6 +10,8 @@ interface ItemsTableProps {
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>
   setPlayer: React.Dispatch<React.SetStateAction<Player>>
   player: Player
+  expensesPreview?: number
+  setExpensesPreview: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 export default function ItemsTable(props: ItemsTableProps) {
@@ -25,10 +27,8 @@ export default function ItemsTable(props: ItemsTableProps) {
 
   function itemSelection(listItem: Pilot | Doctor | Engineer | Trader) {
     props.selectedItems.includes(listItem.id) ? props.setSelectedItems(props.selectedItems.filter(item => item !== listItem.id)) : props.setSelectedItems((prevState) => [...prevState, listItem.id])
-    props.setPlayer((prevState) => ({
-      ...prevState,
-      wallet: prevState.wallet - listItem.price
-    }))
+
+    props.setExpensesPreview(prevState => (prevState || 0) + listItem.price);
   }
 
   return (

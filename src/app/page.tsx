@@ -20,7 +20,7 @@ export default function Home() {
   const [player, setPlayer] = useState<Player>(basicPlayer)
   const [currentPage, setCurrentPage] = useState<string>('')
   const [players, setPlayers] = useState<Player[]>([])
-
+  const [expensesPreview, setExpensesPreview] = useState<number | undefined>(undefined)
   const [currentSubPage, setCurrentSubPage] = useState<SubPage | undefined>(undefined)
 
   const pages: { [key: string]: React.JSX.Element } = {
@@ -28,11 +28,15 @@ export default function Home() {
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
     playersList: <PlayersList activePlayers={players} />,
     playerDetail: <PlayerDetail />,
-    auction: <Auction setCurrentSubPage={setCurrentSubPage} currentSubPage={currentSubPage} player={player} setPlayer={setPlayer} />,
+    auction: <Auction setCurrentSubPage={setCurrentSubPage} currentSubPage={currentSubPage} player={player} setPlayer={setPlayer} setExpensesPreview={setExpensesPreview} expensesPreview={expensesPreview}/>,
     settings: <Settings setPlayer={setPlayer} setCurrentPage={setCurrentPage} />,
   }
 
   const playersCollectionRef = collection(db, dbCollections.players);
+
+  useEffect(() => {
+    console.log(expensesPreview)
+  }, [expensesPreview]);
 
   useEffect(() => {
     (async () => {
@@ -72,9 +76,9 @@ export default function Home() {
 
   // the player has a name only when it's logged in so, when he has one, he's redirected to the playersList page
   useEffect(() => {
-    if (player.id) {
-      updatePlayer(player.id, player)
-    }
+    // if (player.id) {
+    //   updatePlayer(player.id, player)
+    // }
     if (player.name) setCurrentPage(pagesNames.playersList)
   }, [player.name]);
 
@@ -98,7 +102,7 @@ export default function Home() {
 
   return (
     <div className="h-full flex flex-col items-start relative">
-      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} player={player} />}
+      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} player={player} expensesPreview={expensesPreview}/>}
       <div className="p-5 w-full">
         {currentPage != undefined && pages[currentPage]}
       </div>

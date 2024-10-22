@@ -10,6 +10,8 @@ interface AuctionProps {
     currentSubPage?: SubPage
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
     player: Player
+    expensesPreview?: number
+    setExpensesPreview: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 export default function Auction(props: AuctionProps) {
@@ -26,6 +28,8 @@ export default function Auction(props: AuctionProps) {
                 selectedItems={selectedItems}
                 player={props.player}
                 setPlayer={props.setPlayer}
+                setExpensesPreview={props.setExpensesPreview} 
+                expensesPreview={props.expensesPreview}
             />
     }
 

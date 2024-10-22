@@ -1,6 +1,7 @@
 import React from 'react';
 import { Player, SubPage } from '@/app/context';
 import { auctionSubPages, pagesNames } from '@/app/enums';
+import './style.scss'
 
 interface TopBarProps {
   setPlayer: React.Dispatch<React.SetStateAction<Player>>
@@ -9,6 +10,7 @@ interface TopBarProps {
   currentPage: string
   currentSubPage?: SubPage
   player: Player
+  expensesPreview?: number
 }
 
 export default function TopBar(props: TopBarProps) {
@@ -33,7 +35,10 @@ export default function TopBar(props: TopBarProps) {
           </button>
         })}
       </div>
-      <span className='w-full end p-3'>{props.player.wallet + ' $'}</span>
+      <div className='w-full relative'>
+        <span className='w-full end p-3'>{props.player.wallet + ' $'}</span>
+        {props.expensesPreview && <span className='expensesPreview'>{'- ' + props.expensesPreview}</span>}
+      </div>
     </div>
   );
 }
