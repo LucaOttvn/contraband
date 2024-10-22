@@ -33,7 +33,7 @@ export default function TopBar(props: TopBarProps) {
           </button>
         })}
       </div>
-      <span className='end p-3'>Credits:{props.player.wallet}</span>
+      <span className='w-full end p-3'>{props.player.wallet + ' $'}</span>
     </div>
   );
 }

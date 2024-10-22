@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Loader from "./components/Loader";
 import { getCollection, updatePlayer } from "../../utils/firestoreQueries";
-import { Player, SubPage, findPlayer } from "./context";
+import { Player, SubPage, basicPlayer, findPlayer } from "./context";
 import { pagesNames, dbCollections, localStorageItems, statuses, auctionSubPages } from "./enums";
 
 import { collection, onSnapshot } from "firebase/firestore";
@@ -16,7 +16,6 @@ import TopBar from "./components/TopBar";
 
 export default function Home() {
 
-  const basicPlayer = { name: '', password: '', status: statuses.offline, wallet: 0}
 
   const [player, setPlayer] = useState<Player>(basicPlayer)
   const [currentPage, setCurrentPage] = useState<string>('')
@@ -29,7 +28,7 @@ export default function Home() {
     login: <Login setCurrentPage={setCurrentPage} player={player} setPlayer={setPlayer} players={players} />,
     playersList: <PlayersList activePlayers={players} />,
     playerDetail: <PlayerDetail />,
-    auction: <Auction setCurrentSubPage={setCurrentSubPage} currentSubPage={currentSubPage}/>,
+    auction: <Auction setCurrentSubPage={setCurrentSubPage} currentSubPage={currentSubPage} player={player} setPlayer={setPlayer} />,
     settings: <Settings setPlayer={setPlayer} setCurrentPage={setCurrentPage} />,
   }
 
@@ -39,8 +38,8 @@ export default function Home() {
     (async () => {
       let playersFromDB = await getCollection(dbCollections.players) as unknown as Player[]
       playersFromDB.filter(player => player.status == statuses.online)
-      console.log(playersFromDB)
       setPlayers(playersFromDB)
+
     })()
 
     onSnapshot(playersCollectionRef, (snapshot) => {
@@ -59,6 +58,8 @@ export default function Home() {
       setPlayers(players);
     });
 
+    // setCurrentPage(localStorage.getItem(localStorageItems.playerId) ? pagesNames.playersList : pagesNames.login)
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
@@ -69,33 +70,27 @@ export default function Home() {
     }));
   }
 
-  // when the get players is completed, search for the player.id and, if found, set player as it, otherwise return to login
-  useEffect(() => {
-    if (localStorage.getItem(localStorageItems.playerId) && players.length > 0) {
-      (async () => {
-        const foundPlayer = await findPlayer(players, localStorage.getItem(localStorageItems.playerId)!)
-        if (foundPlayer) {
-          setPlayer(foundPlayer)
-          setCurrentPage(pagesNames.playersList)
-        }
-        else {
-          localStorage.removeItem(localStorageItems.playerId)
-          setPlayer(basicPlayer)
-          setCurrentPage(pagesNames.login)
-        }
-      })()
-    }
-    if (!localStorage.getItem(localStorageItems.playerId)) {
-      setCurrentPage(pagesNames.login)
-    }
-  }, [players]);
-
+  // the player has a name only when it's logged in so, when he has one, he's redirected to the playersList page
   useEffect(() => {
     if (player.id) {
-      console.log(player)
       updatePlayer(player.id, player)
     }
-  }, [player]);
+    if (player.name) setCurrentPage(pagesNames.playersList)
+  }, [player.name]);
+
+
+  // when the get players is completed, search for the player.id and, if found, set player as it, otherwise return to login
+  useEffect(() => {
+    if (players[0]) (async () => {
+      console.log(players)
+      if (localStorage.getItem(localStorageItems.playerId)) {
+        const foundPlayer = await findPlayer(players, localStorage.getItem(localStorageItems.playerId)!)
+        if (foundPlayer) setPlayer(foundPlayer)
+      } else {
+        setCurrentPage(pagesNames.login)
+      }
+    })()
+  }, [players]);
 
   useEffect(() => {
     setCurrentSubPage(undefined)
@@ -103,7 +98,7 @@ export default function Home() {
 
   return (
     <div className="h-full flex flex-col items-start relative">
-      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} player={player}/>}
+      {currentPage != pagesNames.login && <TopBar currentSubPage={currentSubPage} setCurrentSubPage={setCurrentSubPage} currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayer={setPlayer} player={player} />}
       <div className="p-5 w-full">
         {currentPage != undefined && pages[currentPage]}
       </div>

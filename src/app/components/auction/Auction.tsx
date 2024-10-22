@@ -8,16 +8,14 @@ import { auctionSubPages, CharacterTypes } from '@/app/enums';
 interface AuctionProps {
     setCurrentSubPage: React.Dispatch<React.SetStateAction<SubPage | undefined>>
     currentSubPage?: SubPage
+    setPlayer: React.Dispatch<React.SetStateAction<Player>>
+    player: Player
 }
 
 export default function Auction(props: AuctionProps) {
 
     const [selectedItems, setSelectedItems] = useState<string[]>([])
 
-    useEffect(() => {
-        console.log(selectedItems)
-    }, [selectedItems]);
-    
     let subPages: { [key: string]: React.JSX.Element } = {
         characterCreation: <CharacterCreation setCurrentSubPage={props.setCurrentSubPage} />,
         itemsTable:
@@ -26,6 +24,8 @@ export default function Auction(props: AuctionProps) {
                 list={characters.filter(char => char.type == props.currentSubPage?.characterType) as any}
                 setSelectedItems={setSelectedItems}
                 selectedItems={selectedItems}
+                player={props.player}
+                setPlayer={props.setPlayer}
             />
     }
 

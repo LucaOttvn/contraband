@@ -12,8 +12,9 @@ interface CharacterCreationProps {
 export default function CharacterCreation(props: CharacterCreationProps) {
 
     return (
-        <div className='center flex-col'>
+        <div className='center flex-col gap-3'>
             <TextStagger text='Auction - character selection' title={true} />
+            <TextStagger text='Choose at least one character per type' title={false} />
             <div className='flex items-center w-full flex-col mt-5 gap-4'>
                 {characterCategories.map((char, index) => {
                     return <div key={'characterCategory' + index} className='characterCategory start gap-3 w-1/2' onClick={() => {
