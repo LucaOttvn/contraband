@@ -12,22 +12,26 @@ interface AuctionProps {
 
 export default function Auction(props: AuctionProps) {
 
+    const [selectedItems, setSelectedItems] = useState<string[]>([])
+
+    useEffect(() => {
+        console.log(selectedItems)
+    }, [selectedItems]);
+    
     let subPages: { [key: string]: React.JSX.Element } = {
         characterCreation: <CharacterCreation setCurrentSubPage={props.setCurrentSubPage} />,
         itemsTable:
             <ItemsTable
                 title={props.currentSubPage ? characterCategories.find(c => c.name == props.currentSubPage!.characterType)?.name : ''}
-                list={characters.filter(char => char.type == props.currentSubPage?.characterType) as any} />
+                list={characters.filter(char => char.type == props.currentSubPage?.characterType) as any}
+                setSelectedItems={setSelectedItems}
+                selectedItems={selectedItems}
+            />
     }
-
 
     useEffect(() => {
         props.setCurrentSubPage({ page: auctionSubPages.characterCreation })
     }, []);
-
-    useEffect(() => {
-      console.log(props.currentSubPage)
-    }, [props.currentSubPage]);
 
     return (
         <div>

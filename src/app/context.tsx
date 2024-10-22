@@ -9,36 +9,37 @@ export interface Player {
 }
 
 export interface Character {
+    id: string
     name: string;
     type: CharacterTypes.pilot | CharacterTypes.doctor | CharacterTypes.engineer | CharacterTypes.trader;
 }
 
 export interface Pilot extends Character {
     type: CharacterTypes.pilot;
-    skills: {
+    skills: [{
         attack: number
-    };
+    }];
 }
 
 export interface Doctor extends Character {
     type: CharacterTypes.doctor;
-    skills: {
+    skills: [{
         cure: number
-    };
+    }];
 }
 
 export interface Engineer extends Character {
     type: CharacterTypes.engineer;
-    skills: {
+    skills: [{
         intelligence: number
-    };
+    }];
 }
 
 export interface Trader extends Character {
     type: CharacterTypes.trader;
-    skills: {
+    skills: [{
         eloquence: number
-    };
+    }];
 }
 
 export let characterCategories = [
@@ -61,110 +62,130 @@ export interface SubPage {
 export const characters: (Pilot | Doctor | Engineer | Trader)[] = [
     // Pilots
     {
+        id: 'pilot-1',
         name: 'Zyra Volantis',
         type: CharacterTypes.pilot,
-        skills: { attack: 9 },
+        skills: [{ attack: 9 }],
     },
     {
+        id: 'pilot-2',
         name: 'Kade Vortex',
         type: CharacterTypes.pilot,
-        skills: { attack: 8 },
+        skills: [{ attack: 8 }],
     },
     {
+        id: 'pilot-3',
         name: 'Ryn Solaris',
         type: CharacterTypes.pilot,
-        skills: { attack: 7 },
+        skills: [{ attack: 7 }],
     },
     {
+        id: 'pilot-4',
         name: 'Talon Dray',
         type: CharacterTypes.pilot,
-        skills: { attack: 10 },
+        skills: [{ attack: 10 }],
     },
     {
+        id: 'pilot-5',
         name: 'Vexa Nyx',
         type: CharacterTypes.pilot,
-        skills: { attack: 6 },
+        skills: [{ attack: 6 }],
     },
 
     // Doctors
     {
+        id: 'doctor-1',
         name: 'Orin Nexa',
         type: CharacterTypes.doctor,
-        skills: { cure: 9 },
+        skills: [{ cure: 9 }],
     },
     {
+        id: 'doctor-2',
         name: 'Draya Zenth',
         type: CharacterTypes.doctor,
-        skills: { cure: 7 },
+        skills: [{ cure: 7 }],
     },
     {
+        id: 'doctor-3',
         name: 'Kel Syntar',
         type: CharacterTypes.doctor,
-        skills: { cure: 6 },
+        skills: [{ cure: 6 }],
     },
     {
+        id: 'doctor-4',
         name: 'Vorin Arkos',
         type: CharacterTypes.doctor,
-        skills: { cure: 8 },
+        skills: [{ cure: 8 }],
     },
     {
+        id: 'doctor-5',
         name: 'Nyra Lumin',
         type: CharacterTypes.doctor,
-        skills: { cure: 10 },
+        skills: [{ cure: 10 }],
     },
 
     // Engineers
     {
+        id: 'engineer-1',
         name: 'Tark Veldon',
         type: CharacterTypes.engineer,
-        skills: { intelligence: 9 },
+        skills: [{ intelligence: 9 }],
     },
     {
+        id: 'engineer-2',
         name: 'Serin Qal',
         type: CharacterTypes.engineer,
-        skills: { intelligence: 7 },
+        skills: [{ intelligence: 7 }],
     },
     {
+        id: 'engineer-3',
         name: 'Zethra Void',
         type: CharacterTypes.engineer,
-        skills: { intelligence: 8 },
+        skills: [{ intelligence: 8 }],
     },
     {
+        id: 'engineer-4',
         name: 'Lara Krynn',
         type: CharacterTypes.engineer,
-        skills: { intelligence: 10 },
+        skills: [{ intelligence: 10 }],
     },
     {
+        id: 'engineer-5',
         name: 'Gorath Xeln',
         type: CharacterTypes.engineer,
-        skills: { intelligence: 6 },
+        skills: [{ intelligence: 6 }],
     },
 
     // Traders
     {
+        id: 'trader-1',
         name: 'Veyra Quell',
         type: CharacterTypes.trader,
-        skills: { eloquence: 7 },
+        skills: [{ eloquence: 7 }],
     },
     {
+        id: 'trader-2',
         name: 'Drax Moren',
         type: CharacterTypes.trader,
-        skills: { eloquence: 9 },
+        skills: [{ eloquence: 9 }],
     },
     {
+        id: 'trader-3',
         name: 'Syla Orik',
         type: CharacterTypes.trader,
-        skills: { eloquence: 6 },
+        skills: [{ eloquence: 6 }],
     },
     {
+        id: 'trader-4',
         name: 'Xylo Rend',
         type: CharacterTypes.trader,
-        skills: { eloquence: 10 },
+        skills: [{ eloquence: 10 }],
     },
     {
+        id: 'trader-5',
         name: 'Tira Voss',
         type: CharacterTypes.trader,
-        skills: { eloquence: 8 },
+        skills: [{ eloquence: 8 }],
     },
 ];
 

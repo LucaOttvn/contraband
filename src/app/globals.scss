@@ -8,9 +8,9 @@
   --black: #0b0b0b;
   --green: #24F08A;
   --lightGreen: #83fabe;
-  --darkGreen: #0b221a;
-  --darkerGreen: #257a5e;
-  --generalBoxShadow: var(--darkGreen) 0px 1px 10px;
+  --darkerGreen: #0c5832;
+  --darkGreen: #257a5e;
+  --generalBoxShadow: var(--darkerGreen) 0px 1px 10px;
   --generalBRadius: 5px;
 }
 
@@ -72,11 +72,8 @@ body {
   }
 
   &:active {
-    background-color: var(--lightGreen);
-    border-top: solid 2px var(--darkerGreen);
-    border-left: solid 2px var(--darkerGreen);
-    border-right: solid 2px var(--lightGreen);
-    border-bottom: solid 2px var(--lightGreen);
+    color: var(--darkerGreen);
+    background-color: var(--green);
   }
 }
 

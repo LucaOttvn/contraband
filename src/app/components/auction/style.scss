@@ -1,21 +1,28 @@
-.characterCategory {
-    background-color: var(--darkGreen);
-    border-top: solid 2px var(--lightGreen);
-    border-left: solid 2px var(--lightGreen);
-    border-right: solid 2px var(--darkerGreen);
-    border-bottom: solid 2px var(--darkerGreen);
+.characterCategory, .itemCard {
+  background-color: var(--darkerGreen);
+  border-top: solid 2px var(--lightGreen);
+  border-left: solid 2px var(--lightGreen);
+  border-right: solid 2px var(--darkGreen);
+  border-bottom: solid 2px var(--darkGreen);
 }
 
-.custom-checkbox {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    background-color: black;
-    border: 2px solid var(--darkerGreen);
-    cursor: pointer;
-  }
-  
-  .custom-checkbox:checked {
-    background-color: var(--green);
-  }
-  
+// .custom-checkbox {
+//   appearance: none;
+//   width: 16px;
+//   height: 16px;
+//   background-color: black;
+//   border: 2px solid var(--darkerGreen);
+//   cursor: pointer;
+// }
+
+input[type='checkbox'] {
+  appearance: none;
+}
+
+.custom-checkbox:checked {
+  background-color: var(--green);
+}
+
+.itemCard {
+  color: var(--green);
+}
