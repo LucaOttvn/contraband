@@ -15,6 +15,7 @@ interface AuctionProps {
 }
 
 export default function Auction(props: AuctionProps) {
+    
 
     const [selectedItems, setSelectedItems] = useState<string[]>([])
 
